@@ -1,0 +1,196 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #2f3439, #0a0f0f);
+    color: #ecf0f1;
+    line-height: 1.6;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #ecf0f1;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: #dfe6e9;
+    margin: 20px 0;
+}
+
+h3 {
+    font-size: 1.4rem;
+    color: #ff7675;
+    margin-bottom: 10px;
+}
+
+form {
+    background: #2d3436;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    max-width: 800px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #ecf0f1;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #636e72;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #1c2526;
+    color: #ecf0f1;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #ff7675;
+    outline: none;
+}
+
+input[type="submit"],
+button {
+    background: #d63031;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+    max-width: 200px;
+    margin: 20px auto;
+    display: block;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background: #c0392b;
+}
+
+.players-input {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.player-input {
+    flex: 1;
+}
+
+.players {
+    display: flex;
+    gap: 20px;
+    max-width: 800px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.user {
+    background: #2d3436;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    flex: 1;
+    min-width: 200px;
+    animation: fadeIn 0.5s ease-in;
+    border: 2px solid transparent;
+}
+
+.user.active {
+    border: 2px solid #ff7675;
+}
+
+.score {
+    font-weight: bold;
+}
+
+.score.score-update {
+    animation: pulse-score 0.5s ease-in;
+}
+
+.dice-area {
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    background: #1c2526;
+    overflow: hidden;
+}
+
+.dice-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.winner {
+    background: #e74c3c;
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: Winners are displayed with a dark red background (#e74c3c) for emphasis.
+- **Score Animation**: The `.score-update` class applies a pulse animation (`pulse-score`) to the score text when updated, making it briefly scale up and change to a light red color (#ff7675).
+- **Horizontal Layout**: Player inputs (`players-input`) and player blocks (`players`) use `display: flex` for horizontal arrangement, switching to vertical on smaller screens (`max-width: 600px`).
+- **Active Player**: Highlighted with a light red border (`border: 2px solid #ff7675`) via the `.active` class.
+- **Session Management**: The session is cleared after the results page, and the page redirects to `index.php` after 10 seconds.
+- **Data Structures**:
+  - Players: 2D array (`$_SESSION['users'][id]['ime']`).
+  - Throws: 1D array (`$_SESSION['results'][id][round]['dice'] = value`).
+  - Scores: `$_SESSION['total_scores'][id]` for cumulative points.
+
+### Usage Instructions
+1. **Prepare Images**:
+   - Create an `images/` directory in the same directory as `index.php`, `game.php`, `results.php`, and `styles.css`.
+   - Add images: `met.gif`, `kocka1.png`, ..., `kocka6.png`.
+   - Ensure filenames are correct.
+
+2. **Setup**:
+   - Save the first code block as `index.php`.
+   - Save the second code block as `game.php`.
+   - Save the third code block as `results.php`.
+   - Save the updated CSS as `styles.css`.
+   - Place all files and the `images/` directory on a PHP-enabled web server.
+
+3. **Testing**:
+   - Open `index.php` in a browser.
+   - Enter names (e.g., Ana, Bor, Cene) horizontally and the number of rounds (e.g., 2).
+   - Click "Začni" → opens `game.php` in a new tab.
+   - Click "Met":
+     - First click: Throw for Ana, shows `met.gif`, then `kockaX.png` (e.g., `kocka3.png`), Ana's block has a red border, score updates with animation.
+     - Second click: Throw for Bor, Bor's block gets a red border, score animates.
+     - Third click: Throw for Cene, then back to Ana for round 2, etc.
+   - After all throws (6 clicks for 2 rounds), redirects to `results.php`.
+   - After 10 seconds, redirects to `index.php`.
+
+### Example Output
+- **First Window (`index.php`)**:
